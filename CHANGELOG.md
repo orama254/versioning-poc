@@ -1,5 +1,11 @@
 # versioning-poc
 
+## 2.0.0
+
+### Major Changes
+
+- [`8f1f64a`](https://github.com/orama254/versioning-poc/commit/8f1f64a457e665191cca95129928720ce4d321c3) Thanks [@orama254](https://github.com/orama254)! - Add artifact deployment workflow
+
 ## 1.0.1
 
 ### Patch Changes
