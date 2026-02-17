@@ -1,0 +1,33 @@
+.greeting-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.15), rgba(100, 108, 255, 0.05));
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  margin-bottom: 1.5rem;
+  animation: banner-fade-in 0.5s ease-out;
+}
+
+.greeting-emoji {
+  font-size: 1.4rem;
+}
+
+.greeting-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+@keyframes banner-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,64 @@
+#!/bin/sh
+
+# Initialize flags
+has_app_changes=0
+has_changeset=0
+is_release_commit=0
+
+# The hook receives lines on stdin: <local_ref> <local_oid> <remote_ref> <remote_oid>
+while read local_ref local_oid remote_ref remote_oid
+do
+  # 1. Determine the commit range
+  if [ "$remote_oid" = "0000000000000000000000000000000000000000" ]; then
+    # New branch: compare against main
+    range="origin/main...$local_oid"
+  else
+    # Existing branch: compare against remote tip
+    range="$remote_oid...$local_oid"
+  fi
+
+  # 2. Check for Release Commit (Exemption)
+  # We check the commit messages in the range for the standard release message
+  if git log --format=%B $range | grep -q "Version Packages"; then
+    is_release_commit=1
+  fi
+
+  # 3. Analyze Changed Files
+  # Get list of changed files in the range
+  changed_files=$(git diff --name-only $range)
+
+  # Check for source code changes (src, public, package.json, etc.)
+  # Exclude test files if desired
+  if echo "$changed_files" | grep -qE "^(src|public|package.json|vite.config.ts)"; then
+    has_app_changes=1
+  fi
+
+  # Check for new changeset files
+  if echo "$changed_files" | grep -qE ".changeset/.*\.md"; then
+    has_changeset=1
+  fi
+done
+
+# 4. Enforcement Logic
+if [ "$is_release_commit" -eq 1 ]; then
+  # Always allow the release commit
+  exit 0
+fi
+
+if [ "$has_app_changes" -eq 1 ] && [ "$has_changeset" -eq 0 ]; then
+  echo "--------------------------------------------------------"
+  echo "🛑 BLOCKING PUSH: Missing Changeset"
+  echo "--------------------------------------------------------"
+  echo "You have modified application code but have not included a changeset."
+  echo "This pipeline requires strict semantic versioning."
+  echo ""
+  echo "To fix this:"
+  echo "  1. Run 'pnpm changeset' in your terminal."
+  echo "  2. Select the bump type (major/minor/patch)."
+  echo "  3. Commit the generated.md file."
+  echo "  4. Push again."
+  echo "--------------------------------------------------------"
+  exit 1
+fi
+
+exit 0
