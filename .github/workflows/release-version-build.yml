@@ -40,13 +40,73 @@ jobs:
         uses: changesets/action@v1
         with:
           version: pnpm ci:version
-          
           publish: pnpm ci:release
           commit: "chore: Version Packages"
           title: "chore: Version Packages"
         env:
           GITHUB_TOKEN: ${{ secrets.CHGSET_TOK }}
-          
-      # - name: Push Tags
-      #   if: steps.changesets.outputs.published == 'true'
-      #   run: git push --follow-tags
+
+      # ─── Build & Release Artifact ───────────────────────────────
+      # The steps below only run when changesets publishes a new version.
+      # We build, zip the dist folder, and upload to a GitHub Release.
+
+      - name: Extract Published Version
+        if: steps.changesets.outputs.published == 'true'
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Published version: $VERSION"
+
+      - name: Build Application
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm build
+
+      - name: Verify Build Output
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "❌ dist folder not found!"
+            ls -la
+            exit 1
+          fi
+          echo "✅ dist folder found"
+          ls -la dist
+
+      - name: Create Zip Artifact
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          ZIP_NAME="app-release-v${{ steps.version.outputs.version }}.zip"
+
+          echo "Zipping dist folder into $ZIP_NAME..."
+          cd dist
+          zip -r "../$ZIP_NAME" .
+          cd ..
+
+          echo "ARTIFACT_PATH=$ZIP_NAME" >> $GITHUB_ENV
+
+      - name: Generate Checksum
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          sha256sum "${{ env.ARTIFACT_PATH }}" > "${{ env.ARTIFACT_PATH }}.sha256"
+
+      - name: Create GitHub Release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.version.outputs.tag }} \
+            --title "Release ${{ steps.version.outputs.tag }}" \
+            --generate-notes \
+            --verify-tag
+
+      - name: Upload Artifact to Release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ steps.version.outputs.tag }} \
+            ${{ env.ARTIFACT_PATH }} \
+            ${{ env.ARTIFACT_PATH }}.sha256 \
+            --clobber
