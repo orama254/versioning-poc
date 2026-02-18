@@ -1,5 +1,11 @@
 # versioning-poc
 
+## 2.2.0
+
+### Minor Changes
+
+- Refactor the app version format on the main page
+
 ## 2.1.1
 
 ### Patch Changes
