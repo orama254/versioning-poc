@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write       
-      pull-requests: write  
-      id-token: write       
+      pull-requests: write     
 
     steps:
       - name: Checkout Repo
@@ -48,6 +47,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.CHGSET_TOK }}
           
-      - name: Push Tags
-        if: steps.changesets.outputs.published == 'true'
-        run: git push --follow-tags
+      # - name: Push Tags
+      #   if: steps.changesets.outputs.published == 'true'
+      #   run: git push --follow-tags
