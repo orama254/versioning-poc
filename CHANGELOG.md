@@ -1,5 +1,11 @@
 # versioning-poc
 
+## 2.3.1
+
+### Patch Changes
+
+- [`8a7763a`](https://github.com/orama254/versioning-poc/commit/8a7763afe186fb03b70ec613ba8d6ab62c16f9ce) Thanks [@orama254](https://github.com/orama254)! - remove unused imports which fail during CI-CD
+
 ## 2.3.0
 
 ### Minor Changes
