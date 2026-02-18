@@ -53,7 +53,8 @@ jobs:
       - name: Create Zip Artifact
         run: |
           # Extract version from tag (e.g., v1.0.0 -> 1.0.0)
-          VERSION=${{ github.ref_name }}
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
           ZIP_NAME="app-release-v${VERSION}.zip"
           
           echo "Zipping dist folder into $ZIP_NAME..."
