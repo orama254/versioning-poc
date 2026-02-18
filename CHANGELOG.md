@@ -1,5 +1,11 @@
 # versioning-poc
 
+## 2.4.0
+
+### Minor Changes
+
+- [`b1308fa`](https://github.com/orama254/versioning-poc/commit/b1308fa16db98c03d76091468a8523fbc1d7ecac) Thanks [@orama254](https://github.com/orama254)! - Add step options to allow custom counter steps
+
 ## 2.3.1
 
 ### Patch Changes
