@@ -1,5 +1,6 @@
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import pkg from '../package.json'
 import { ThemeToggle } from './components/ThemeToggle'
 import { GreetingBanner } from './components/GreetingBanner'
 import { Counter } from './components/Counter'
@@ -39,6 +40,7 @@ function App() {
       <ThemeToggle />
       <GreetingBanner />
       <h1>Vite + React</h1>
+      <p style={{fontSize:12, opacity:0.8}}>Version: {pkg.version}</p>
       <Tabs tabs={tabs} defaultTab="counter" />
     </>
   )
