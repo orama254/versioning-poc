@@ -1,5 +1,11 @@
 # versioning-poc
 
+## 2.2.1
+
+### Patch Changes
+
+- [`63bf4d5`](https://github.com/orama254/versioning-poc/commit/63bf4d5b1b1941d763f02c29b929551197d0c5c2) Thanks [@orama254](https://github.com/orama254)! - patch bump
+
 ## 2.2.0
 
 ### Minor Changes
