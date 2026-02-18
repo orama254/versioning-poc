@@ -1,5 +1,27 @@
 # versioning-poc
 
+## 2.5.0
+
+### Minor Changes
+
+- [`e086849`](https://github.com/orama254/versioning-poc/commit/e0868491876505b09d455505298b2c8e28f9ac89) Thanks [@orama254](https://github.com/orama254)! - Add `useDebounce` hook for performance optimization
+
+  A new reusable hook for debouncing values with configurable delay. Perfect for:
+
+  - Debouncing search inputs to reduce API calls
+  - Optimizing resize/scroll event handlers
+  - Auto-save functionality with delayed persistence
+  - Filtering with delayed updates
+
+  Usage: `const debouncedValue = useDebounce(value, delayMs)`
+
+  Features:
+
+  - Type-safe with generic support for any value type
+  - Default 500ms delay, customizable per use case
+  - Automatic cleanup of timeouts on unmount or value change
+  - Zero external dependencies
+
 ## 2.4.0
 
 ### Minor Changes
