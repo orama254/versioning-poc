@@ -92,6 +92,15 @@ jobs:
         run: |
           sha256sum "${{ env.ARTIFACT_PATH }}" > "${{ env.ARTIFACT_PATH }}.sha256"
 
+      - name: Push Tag to Remote
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.CHGSET_TOK }}
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          echo "🏷️ Pushing tag $TAG to remote..."
+          git push origin "$TAG          
+
       - name: Create GitHub Release
         if: steps.changesets.outputs.published == 'true'
         env:
