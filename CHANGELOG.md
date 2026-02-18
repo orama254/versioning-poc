@@ -1,5 +1,23 @@
 # versioning-poc
 
+## 2.3.0
+
+### Minor Changes
+
+- [`a1edacd`](https://github.com/orama254/versioning-poc/commit/a1edacd1564453ef3d0a3439f6158da34a5e30e7) Thanks [@orama254](https://github.com/orama254)! - Add `useLocalStorage` hook for generic localStorage persistence
+
+  This new hook provides a reusable way to persist and sync state with browser localStorage. It includes:
+
+  - Type-safe state management with generics
+  - Automatic serialization/deserialization of values
+  - Error handling for localStorage unavailability
+  - Callback to remove values from storage
+  - Consistent API with existing `useTheme` hook
+
+  Usage: `const [value, setValue, removeValue] = useLocalStorage('key', initialValue)`
+
+- [`b16ea12`](https://github.com/orama254/versioning-poc/commit/b16ea1218a28068c925d7d85312056e9c3c1172f) Thanks [@orama254](https://github.com/orama254)! - minor change to the codebase to simulate the minor verisoning on ci-cd
+
 ## 2.2.2
 
 ### Patch Changes
