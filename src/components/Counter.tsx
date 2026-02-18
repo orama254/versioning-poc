@@ -7,6 +7,8 @@ interface CounterProps {
   initialValue?: number;
   step?: number;
   label?: string;
+  min?: number;
+  max?: number;
   onCountChange?: (value: number) => void;
 }
 
@@ -14,21 +16,30 @@ export function Counter({
   initialValue = 0,
   step = 1,
   label = 'Count',
+  min = -5,
+  max,
   onCountChange,
 }: CounterProps) {
   const [count, setCount] = useState(initialValue);
   const [currentStep, setCurrentStep] = useState(step);
 
+  const isAtMin = min !== undefined && count <= min;
+  const isAtMax = max !== undefined && count >= max;
+
   const increment = () => {
+    if (isAtMax) return;
     const next = count + currentStep;
-    setCount(next);
-    onCountChange?.(next);
+    const clamped = max !== undefined ? Math.min(next, max) : next;
+    setCount(clamped);
+    onCountChange?.(clamped);
   };
 
   const decrement = () => {
+    if (isAtMin) return;
     const next = count - currentStep;
-    setCount(next);
-    onCountChange?.(next);
+    const clamped = min !== undefined ? Math.max(next, min) : next;
+    setCount(clamped);
+    onCountChange?.(clamped);
   };
 
   const reset = () => {
@@ -40,9 +51,23 @@ export function Counter({
     <div className="counter">
       <span className="counter-label">{label}</span>
       <div className="counter-controls">
-        <button className="counter-btn" onClick={decrement} aria-label="Decrement">−</button>
+        <button
+          className="counter-btn"
+          onClick={decrement}
+          disabled={isAtMin}
+          aria-label={isAtMin ? 'Decrement (minimum reached)' : 'Decrement'}
+        >
+          −
+        </button>
         <span className="counter-value">{count}</span>
-        <button className="counter-btn" onClick={increment} aria-label="Increment">+</button>
+        <button
+          className="counter-btn"
+          onClick={increment}
+          disabled={isAtMax}
+          aria-label={isAtMax ? 'Increment (maximum reached)' : 'Increment'}
+        >
+          +
+        </button>
       </div>
       <div className="counter-step-selector">
         <span className="counter-step-label">Step:</span>

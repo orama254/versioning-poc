@@ -42,6 +42,17 @@
   transform: scale(1.1);
 }
 
+.counter-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: rgba(100, 108, 255, 0.15);
+}
+
+.counter-btn:disabled:hover {
+  transform: none;
+  background: transparent;
+}
+
 .counter-value {
   font-size: 3rem;
   font-weight: 700;
