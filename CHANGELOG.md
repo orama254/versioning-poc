@@ -1,5 +1,11 @@
 # versioning-poc
 
+## 2.2.2
+
+### Patch Changes
+
+- [`6e3891e`](https://github.com/orama254/versioning-poc/commit/6e3891e80be37e751399639f6831cbc978fc8645) Thanks [@orama254](https://github.com/orama254)! - small cosmetic patch on the ci-cd workflow
+
 ## 2.2.1
 
 ### Patch Changes
